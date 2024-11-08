@@ -33,7 +33,17 @@ Follow these steps to install and launch the project using Skaffold:
 2. **Install Skaffold:** (if you haven’t already)
    [Skaffold Installation Guide](https://skaffold.dev/docs/install/)
 
-3. **Start the services with Skaffold:**
+3. **Install ingress-nginx:** (if not already installed)
+   ```bash
+   kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.12.0-beta.0/deploy/static/provider/cloud/deploy.yaml
+   ```
+
+4. **Create an Ingress resource for routing:** The project includes an ingress service for routing traffic to the various services. You can apply the following ingress configuration:
+   ```bash
+   kubectl apply -f ./infra/k8s/ingress-srv.yaml
+   ```
+
+5. **Start the services with Skaffold:**
    ```bash
    skaffold dev
    ```
