@@ -26,8 +26,8 @@ Follow these steps to install and launch the project using Skaffold:
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/ngoctong421/blog.git
-   cd blog
+   git clone https://github.com/ngoctong421/ticketing.git
+   cd ticketing
    ```
 
 ## Usage
