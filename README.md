@@ -30,6 +30,16 @@ Follow these steps to install and launch the project using Skaffold:
    cd ticketing
    ```
 
+2. **Install Skaffold:** (if you haven’t already)
+   [Skaffold Installation Guide](https://skaffold.dev/docs/install/)
+
+3. **Start the services with Skaffold:**
+   ```bash
+   skaffold dev
+   ```
+
+Skaffold will automatically set up the Kubernetes environment and deploy the necessary services, including ingress-nginx for routing traffic.
+
 ## Usage
 
 
