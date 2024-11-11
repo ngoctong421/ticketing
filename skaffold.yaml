@@ -6,8 +6,11 @@ manifests:
 build:
   local:
     push: false
+  # googleCloudBuild:
+  #   projectId: project-name
   artifacts:
     - image: ngoctong421/auth
+    # - image: us.gcr.io/project-name/auth
       context: auth
       docker:
         dockerfile: Dockerfile
