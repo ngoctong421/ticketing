@@ -1,6 +1,9 @@
 import express, { Request, Response, NextFunction } from 'express';
 import { z, ZodError } from 'zod';
 
+import { RequestValidationError } from '../errors/request-validation-error';
+import { DatabaseConnectionError } from '../errors/database-connection-error';
+
 const router = express.Router();
 
 const userSchema = z.object({
@@ -19,15 +22,9 @@ const validateRequestBody =
       next();
     } catch (error) {
       if (error instanceof ZodError) {
-        res.status(400).json({
-          message: 'Invalid request',
-          errors: error.errors.map((e) => ({
-            field: e.path[0],
-            message: e.message,
-          })),
-        });
-        return;
+        throw new RequestValidationError(error);
       }
+
       next(error);
     }
   };
@@ -38,7 +35,7 @@ router.post(
   (req: Request, res: Response) => {
     const { email, password } = req.body;
 
-    console.log('Creating a user...');
+    throw new DatabaseConnectionError();
 
     res.send({});
   }
