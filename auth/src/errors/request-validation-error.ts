@@ -1,13 +1,23 @@
-import { ZodError } from 'zod';
+import { ZodError, ZodIssue } from 'zod';
 
-export class RequestValidationError extends Error {
-  public errors: ZodError['errors'];
+import { CustomError } from './custom-error';
+
+export class RequestValidationError extends CustomError {
+  statusCode = 400;
+  errors: ZodIssue[];
 
   constructor(public error: ZodError) {
-    super();
+    super('Invalid request parameters');
 
     this.errors = error.errors;
 
     Object.setPrototypeOf(this, RequestValidationError.prototype);
+  }
+
+  serializeErrors() {
+    return this.errors.map((e: ZodIssue) => ({
+      message: e.message,
+      field: typeof e.path[0] === 'string' ? e.path[0] : undefined,
+    }));
   }
 }
