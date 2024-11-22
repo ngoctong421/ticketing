@@ -1,6 +1,8 @@
 import express, { Request, Response, NextFunction } from 'express';
 import { z, ZodError } from 'zod';
 
+import { User } from '../models/user';
+
 import { RequestValidationError } from '../errors/request-validation-error';
 import { DatabaseConnectionError } from '../errors/database-connection-error';
 
@@ -22,7 +24,7 @@ const validateRequestBody =
       next();
     } catch (error) {
       if (error instanceof ZodError) {
-        throw new RequestValidationError(error);
+        return next(new RequestValidationError(error));
       }
 
       next(error);
@@ -32,12 +34,22 @@ const validateRequestBody =
 router.post(
   '/api/users/signup',
   validateRequestBody(userSchema),
-  (req: Request, res: Response) => {
+  async (req: Request, res: Response): Promise<void> => {
     const { email, password } = req.body;
 
-    throw new DatabaseConnectionError();
+    const existingUser = await User.findOne({ email });
 
-    res.send({});
+    if (existingUser) {
+      res.status(400).send({
+        errors: [{ message: 'Email already in use' }],
+      });
+
+      return;
+    }
+
+    const user = User.build({ email, password });
+
+    res.status(201).send(user);
   }
 );
 
