@@ -1,4 +1,5 @@
 import express from 'express';
+import session from 'express-session';
 import mongoose from 'mongoose';
 
 import { currentUserRouter } from './routes/current-user';
@@ -13,6 +14,19 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use(
+  session({
+    secret: 'your-secret-key',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: 3600000,
+    },
+  })
+);
 
 app.use(currentUserRouter);
 app.use(signinRouter);
