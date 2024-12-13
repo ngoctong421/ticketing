@@ -15,6 +15,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.set('trust proxy', 1);
 app.use(
   session({
     secret: 'your-secret-key',
@@ -22,7 +23,7 @@ app.use(
     saveUninitialized: false,
     cookie: {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
+      secure: true || process.env.NODE_ENV === 'production',
       maxAge: 3600000,
     },
   })

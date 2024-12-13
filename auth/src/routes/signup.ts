@@ -1,4 +1,5 @@
 import express, { Request, Response, NextFunction } from 'express';
+import jwt from 'jsonwebtoken';
 import { z, ZodError } from 'zod';
 
 import { User } from '../models/user';
@@ -45,6 +46,12 @@ router.post(
 
     const user = User.build({ email, password });
     await user.save();
+
+    // Generate JWT
+    const userJwt = jwt.sign({ id: user.id, email: user.email }, 'secret');
+
+    // Store it on session object
+    req.session.jwt = userJwt;
 
     res.status(201).send(user);
   }
