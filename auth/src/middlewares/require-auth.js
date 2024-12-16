@@ -8,16 +8,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.currentUserRouter = void 0;
-const express_1 = __importDefault(require("express"));
-const current_user_1 = require("../middlewares/current-user");
-const require_auth_1 = require("../middlewares/require-auth");
-const router = express_1.default.Router();
-exports.currentUserRouter = router;
-router.get('/api/users/currentuser', current_user_1.currentUser, require_auth_1.requireAuth, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    res.send(req.currentUser);
-}));
+exports.requireAuth = void 0;
+const not_authorized_error_1 = require("../errors/not-authorized-error");
+const requireAuth = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    if (!req.currentUser) {
+        throw new not_authorized_error_1.NotAuthorizedError();
+    }
+    next();
+});
+exports.requireAuth = requireAuth;
