@@ -15,25 +15,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.signinRouter = void 0;
 const express_1 = __importDefault(require("express"));
 const zod_1 = require("zod");
-const request_validation_error_1 = require("../errors/request-validation-error");
+const validate_request_1 = require("../middlewares/validate-request");
 const router = express_1.default.Router();
 exports.signinRouter = router;
 const userSchema = zod_1.z.object({
     email: zod_1.z.string().email({ message: 'Invalid email address' }),
     password: zod_1.z.string().trim().min(1, { message: 'You must supply a password' }),
 });
-const validateRequestBody = (schema) => (req, res, next) => {
-    try {
-        schema.parse(req.body);
-        next();
-    }
-    catch (error) {
-        if (error instanceof zod_1.ZodError) {
-            throw new request_validation_error_1.RequestValidationError(error);
-        }
-        next(error);
-    }
-};
-router.post('/api/users/signin', validateRequestBody(userSchema), (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+router.post('/api/users/signin', (0, validate_request_1.validateRequest)(userSchema), (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     res.send('Hi there!');
 }));

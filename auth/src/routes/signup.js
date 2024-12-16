@@ -17,7 +17,7 @@ const express_1 = __importDefault(require("express"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const zod_1 = require("zod");
 const user_1 = require("../models/user");
-const request_validation_error_1 = require("../errors/request-validation-error");
+const validate_request_1 = require("../middlewares/validate-request");
 const bad_request_error_1 = require("../errors/bad-request-error");
 const router = express_1.default.Router();
 exports.signupRouter = router;
@@ -28,19 +28,7 @@ const userSchema = zod_1.z.object({
         .min(4, { message: 'Must be 4 or more characters long' })
         .max(20, { message: 'Must be 20 or fewer characters long' }),
 });
-const validateRequestBody = (schema) => (req, res, next) => {
-    try {
-        schema.parse(req.body);
-        next();
-    }
-    catch (error) {
-        if (error instanceof zod_1.ZodError) {
-            throw new request_validation_error_1.RequestValidationError(error);
-        }
-        next(error);
-    }
-};
-router.post('/api/users/signup', validateRequestBody(userSchema), (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+router.post('/api/users/signup', (0, validate_request_1.validateRequest)(userSchema), (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password } = req.body;
     const existingUser = yield user_1.User.findOne({ email });
     if (existingUser) {

@@ -1,10 +1,11 @@
 import express, { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
-import { z, ZodError } from 'zod';
+import { z } from 'zod';
 
 import { User } from '../models/user';
 
-import { RequestValidationError } from '../errors/request-validation-error';
+import { validateRequest } from '../middlewares/validate-request';
+
 import { BadRequestError } from '../errors/bad-request-error';
 
 const router = express.Router();
@@ -17,24 +18,9 @@ const userSchema = z.object({
     .max(20, { message: 'Must be 20 or fewer characters long' }),
 });
 
-const validateRequestBody =
-  (schema: z.ZodSchema<any>) =>
-  (req: Request, res: Response, next: NextFunction): void => {
-    try {
-      schema.parse(req.body);
-      next();
-    } catch (error) {
-      if (error instanceof ZodError) {
-        throw new RequestValidationError(error);
-      }
-
-      next(error);
-    }
-  };
-
 router.post(
   '/api/users/signup',
-  validateRequestBody(userSchema),
+  validateRequest(userSchema),
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const { email, password } = req.body;
 
