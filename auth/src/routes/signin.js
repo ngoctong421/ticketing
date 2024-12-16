@@ -14,8 +14,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.signinRouter = void 0;
 const express_1 = __importDefault(require("express"));
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const zod_1 = require("zod");
+const user_1 = require("../models/user");
 const validate_request_1 = require("../middlewares/validate-request");
+const bad_request_error_1 = require("../errors/bad-request-error");
+const password_1 = require("../services/password");
 const router = express_1.default.Router();
 exports.signinRouter = router;
 const userSchema = zod_1.z.object({
@@ -23,5 +27,18 @@ const userSchema = zod_1.z.object({
     password: zod_1.z.string().trim().min(1, { message: 'You must supply a password' }),
 });
 router.post('/api/users/signin', (0, validate_request_1.validateRequest)(userSchema), (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    res.send('Hi there!');
+    const { email, password } = req.body;
+    const existingUser = yield user_1.User.findOne({ email });
+    if (!existingUser) {
+        return next(new bad_request_error_1.BadRequestError('Invalid credentials'));
+    }
+    const passwordMatch = yield password_1.Password.compare(existingUser.password, password);
+    if (!passwordMatch) {
+        return next(new bad_request_error_1.BadRequestError('Invalid credentials'));
+    }
+    // Generate JWT
+    const userJwt = jsonwebtoken_1.default.sign({ id: existingUser.id, email: existingUser.email }, process.env.JWT_KEY);
+    // Store it on session object
+    req.session.jwt = userJwt;
+    res.status(200).send(existingUser);
 }));
