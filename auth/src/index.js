@@ -31,7 +31,7 @@ app.use((0, express_session_1.default)({
     saveUninitialized: false,
     cookie: {
         httpOnly: true,
-        secure: true || process.env.NODE_ENV === 'production',
+        secure: process.env.NODE_ENV === 'production',
         maxAge: 3600000,
     },
 }));
@@ -44,6 +44,9 @@ app.all('*', (req, res, next) => __awaiter(void 0, void 0, void 0, function* () 
 }));
 app.use(error_handler_1.errorHandler);
 const start = () => __awaiter(void 0, void 0, void 0, function* () {
+    if (!process.env.JWT_KEY) {
+        throw new Error('JWT_KEY must be defined');
+    }
     try {
         yield mongoose_1.default.connect('mongodb://auth-mongo-srv:27017/auth');
         console.log('Connected to database');
