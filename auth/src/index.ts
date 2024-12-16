@@ -23,7 +23,7 @@ app.use(
     saveUninitialized: false,
     cookie: {
       httpOnly: true,
-      secure: true || process.env.NODE_ENV === 'production',
+      secure: process.env.NODE_ENV === 'production',
       maxAge: 3600000,
     },
   })
