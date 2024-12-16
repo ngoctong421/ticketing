@@ -17,5 +17,13 @@ const express_1 = __importDefault(require("express"));
 const router = express_1.default.Router();
 exports.signoutRouter = router;
 router.post('/api/users/signout', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    res.send('Hi there!');
+    req.session.destroy((err) => {
+        if (err) {
+            console.error(err);
+            res.status(500).send('Unable to log out');
+        }
+        else {
+            res.send({});
+        }
+    });
 }));
