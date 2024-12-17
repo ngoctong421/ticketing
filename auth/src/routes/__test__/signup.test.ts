@@ -41,3 +41,21 @@ it('returns a 400 with missing email and password', async () => {
     .send({ password: '1234' })
     .expect(400);
 });
+
+it('disallows duplicate emails', async () => {
+  await request(app)
+    .post('/api/users/signup')
+    .send({
+      email: 'test@test.io',
+      password: '1234',
+    })
+    .expect(201);
+
+  await request(app)
+    .post('/api/users/signup')
+    .send({
+      email: 'test@test.io',
+      password: '1234',
+    })
+    .expect(400);
+});
