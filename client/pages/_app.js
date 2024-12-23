@@ -4,6 +4,7 @@ import buildClient from '../api/build-client';
 import Header from '../components/header';
 
 const AppComponent = ({ Component, pageProps, currentUser }) => {
+  console.log(currentUser);
   return (
     <div>
       <Header currentUser={currentUser} />
@@ -23,7 +24,7 @@ AppComponent.getInitialProps = async (appContext) => {
 
   return {
     pageProps,
-    currentUser: data,
+    currentUser: data.email ? data : null,
   };
 };
 
