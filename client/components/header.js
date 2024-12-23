@@ -2,9 +2,9 @@ import Link from 'next/link';
 
 export default ({ currentUser }) => {
   const links = [
-    ...(!currentUser ? [{ label: 'Sign up', href: '/auth/sign-up' }] : []),
-    ...(!currentUser ? [{ label: 'Sign in', href: '/auth/sign-in' }] : []),
-    ...(currentUser ? [{ label: 'Sign out', href: '/auth/sign-out' }] : []),
+    ...(!currentUser ? [{ label: 'Sign up', href: '/auth/signup' }] : []),
+    ...(!currentUser ? [{ label: 'Sign in', href: '/auth/signin' }] : []),
+    ...(currentUser ? [{ label: 'Sign out', href: '/auth/signout' }] : []),
   ].map(({ label, href }) => {
     return (
       <li key={href} className="nav-item">
