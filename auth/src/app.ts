@@ -1,13 +1,11 @@
 import express from 'express';
 import session from 'express-session';
+import { errorHandler, NotFoundError } from 'tickets-common';
 
 import { currentUserRouter } from './routes/current-user';
 import { signinRouter } from './routes/signin';
 import { signoutRouter } from './routes/signout';
 import { signupRouter } from './routes/signup';
-
-import { errorHandler } from './middlewares/error-handler';
-import { NotFoundError } from './errors/not-found-error';
 
 const app = express();
 
