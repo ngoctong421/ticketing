@@ -2,6 +2,8 @@ import express from 'express';
 import session from 'express-session';
 import { errorHandler, NotFoundError } from 'tickets-common';
 
+import { createTicketRouter } from './routes/new';
+
 const app = express();
 
 app.use(express.json());
@@ -20,6 +22,8 @@ app.use(
     },
   })
 );
+
+app.use(createTicketRouter);
 
 app.all('*', async (req, res, next) => {
   next(new NotFoundError());
