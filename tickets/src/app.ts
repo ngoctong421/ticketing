@@ -1,6 +1,6 @@
 import express from 'express';
 import session from 'express-session';
-import { errorHandler, NotFoundError } from 'tickets-common';
+import { errorHandler, NotFoundError, currentUser } from 'tickets-common';
 
 import { createTicketRouter } from './routes/new';
 
@@ -22,6 +22,8 @@ app.use(
     },
   })
 );
+
+app.use(currentUser);
 
 app.use(createTicketRouter);
 
