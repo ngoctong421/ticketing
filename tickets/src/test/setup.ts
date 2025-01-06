@@ -36,7 +36,6 @@ global.signin = () => {
   const payload = {
     id: '677c026cdfc1e451fadfc94d',
     email: 'test@test.io',
-    iat: 1736180332,
   };
 
   // Create the JWT!
