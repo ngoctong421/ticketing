@@ -2,6 +2,8 @@ import express, { Request, Response } from 'express';
 import { requireAuth, validateRequest, BadRequestError } from 'tickets-common';
 import { z } from 'zod';
 
+import { Ticket } from '../models/ticket';
+
 const router = express.Router();
 
 const ticketSchema = z.object({
@@ -14,7 +16,16 @@ router.post(
   requireAuth,
   validateRequest(ticketSchema),
   async (req: Request, res: Response) => {
-    res.sendStatus(200);
+    const { title, price } = req.body;
+
+    const ticket = Ticket.build({
+      title,
+      price,
+      userId: req.currentUser!.id,
+    });
+    await ticket.save();
+
+    res.status(201).send(ticket);
   }
 );
 
