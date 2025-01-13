@@ -26,9 +26,9 @@ router.put(
     if (!ticket) {
       return next(new NotFoundError());
     }
-    console.log(ticket.userId, req.currentUser?.id);
-    if (ticket.userId != req.currentUser?.id) {
-      next(new NotAuthorizedError());
+
+    if (ticket.userId !== req.currentUser?.id) {
+      return next(new NotAuthorizedError());
     }
 
     res.send(ticket);
