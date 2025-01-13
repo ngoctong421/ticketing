@@ -21,11 +21,31 @@ it('returns 401 if the user is not authenticated', async () => {
 
   await request(app)
     .put(`/api/tickets/${ticketId}`)
-    .send({ title: 'test', price: 20 })
+    .send({
+      title: 'test',
+      price: 20,
+    })
     .expect(401);
 });
 
-it('returns 401 if the user does not own the ticket', async () => {});
+it('returns 401 if the user does not own the ticket', async () => {
+  const response = await request(app)
+    .post('/api/tickets')
+    .set('Cookie', global.signin())
+    .send({
+      title: 'test',
+      price: 20,
+    });
+
+  await request(app)
+    .put(`/api/tickets/${response.body.id}`)
+    .set('Cookie', global.signin())
+    .send({
+      title: 'test',
+      price: 30,
+    })
+    .expect(401);
+});
 
 it('returns 400 if the user provides a invalid title or price', async () => {});
 

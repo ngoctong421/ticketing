@@ -1,5 +1,10 @@
 import express, { NextFunction, Request, Response } from 'express';
-import { requireAuth, validateRequest, NotFoundError } from 'tickets-common';
+import {
+  requireAuth,
+  validateRequest,
+  NotFoundError,
+  NotAuthorizedError,
+} from 'tickets-common';
 import { z } from 'zod';
 
 import { Ticket } from '../models/ticket';
@@ -20,6 +25,10 @@ router.put(
 
     if (!ticket) {
       return next(new NotFoundError());
+    }
+    console.log(ticket.userId, req.currentUser?.id);
+    if (ticket.userId != req.currentUser?.id) {
+      next(new NotAuthorizedError());
     }
 
     res.send(ticket);
