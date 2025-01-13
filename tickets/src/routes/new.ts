@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import { requireAuth, validateRequest, BadRequestError } from 'tickets-common';
+import { requireAuth, validateRequest } from 'tickets-common';
 import { z } from 'zod';
 
 import { Ticket } from '../models/ticket';
