@@ -31,6 +31,12 @@ router.put(
       return next(new NotAuthorizedError());
     }
 
+    ticket.set({
+      title: req.body.title,
+      price: req.body.price,
+    });
+    await ticket.save();
+
     res.send(ticket);
   }
 );
