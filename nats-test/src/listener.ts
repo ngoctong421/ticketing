@@ -16,12 +16,14 @@ stan.on('connect', () => {
   const options = stan
     .subscriptionOptions()
     .setManualAckMode(true)
+    // get all the events that have been emitted in the past
     .setDeliverAllAvailable()
+    // keep track of all the different events that have gone to this subcription or the queue group, even if it goes offline for a litle bit
     .setDurableName('accounting-service');
 
   const subcription = stan.subscribe(
     'ticket:created',
-    // 'orders-service-queue-group',
+    'queue-group-name',
     options
   );
 
