@@ -32,12 +32,16 @@ abstract class Listener {
   }
 
   subscriptionOptions() {
-    return this.client
-      .subscriptionOptions()
-      .setManualAckMode(true)
-      .setAckWait(this.ackWait)
-      .setDeliverAllAvailable()
-      .setDurableName(this.queueGroupName);
+    return (
+      this.client
+        .subscriptionOptions()
+        .setManualAckMode(true)
+        .setAckWait(this.ackWait)
+        // get all the events that have been emitted in the past
+        .setDeliverAllAvailable()
+        // keep track of all the different events that have gone to this subcription or the queue group, even if it goes offline for a litle bit
+        .setDurableName(this.queueGroupName)
+    );
   }
 
   listen() {
