@@ -3,14 +3,12 @@ import mongoose from 'mongoose';
 import {
   BadRequestError,
   NotFoundError,
-  OrderStatus,
   requireAuth,
   validateRequest,
 } from 'tickets-common';
 import { z } from 'zod';
 
 import { Ticket } from '../models/ticket';
-import { Order } from '../models/order';
 
 const router = express.Router();
 
@@ -35,17 +33,8 @@ router.post(
     }
 
     // Make sure that this ticket is not already reserved
-    const existingOrder = await Order.findOne({
-      ticket: ticket,
-      status: {
-        $in: [
-          OrderStatus.Created,
-          OrderStatus.AwaitingPayment,
-          OrderStatus.Complete,
-        ],
-      },
-    });
-    if (existingOrder) {
+    const isReserved = await ticket.isReserved();
+    if (isReserved) {
       return next(new BadRequestError('Ticket is already reserved'));
     }
 
