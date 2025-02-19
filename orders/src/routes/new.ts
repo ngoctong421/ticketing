@@ -1,9 +1,16 @@
 import express, { NextFunction, Request, Response } from 'express';
 import mongoose from 'mongoose';
-import { NotFoundError, requireAuth, validateRequest } from 'tickets-common';
+import {
+  BadRequestError,
+  NotFoundError,
+  OrderStatus,
+  requireAuth,
+  validateRequest,
+} from 'tickets-common';
 import { z } from 'zod';
 
 import { Ticket } from '../models/ticket';
+import { Order } from '../models/order';
 
 const router = express.Router();
 
@@ -28,6 +35,19 @@ router.post(
     }
 
     // Make sure that this ticket is not already reserved
+    const existingOrder = await Order.findOne({
+      ticket: ticket,
+      status: {
+        $in: [
+          OrderStatus.Created,
+          OrderStatus.AwaitingPayment,
+          OrderStatus.Complete,
+        ],
+      },
+    });
+    if (existingOrder) {
+      return next(new BadRequestError('Ticket is already reserved'));
+    }
 
     // Calculate an expiration date for this order
 
