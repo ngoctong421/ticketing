@@ -1,10 +1,7 @@
 import request from 'supertest';
-import mongoose from 'mongoose';
-import { OrderStatus } from 'tickets-common';
 
 import { app } from '../../app';
 import { Ticket } from '../../models/ticket';
-import { Order } from '../../models/order';
 
 const buildTicket = async () => {
   const ticket = Ticket.build({
