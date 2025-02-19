@@ -1,15 +1,17 @@
 import mongoose from 'mongoose';
 
 interface OrderAttrs {
-  title: string;
-  price: number;
   userId: string;
+  status: string;
+  expiresAt: Date;
+  ticket: TicketDoc;
 }
 
 interface OrderDoc extends mongoose.Document {
-  title: string;
-  price: number;
   userId: string;
+  status: string;
+  expiresAt: Date;
+  ticket: TicketDoc;
 }
 
 interface OrderModel extends mongoose.Model<OrderDoc> {
@@ -18,17 +20,20 @@ interface OrderModel extends mongoose.Model<OrderDoc> {
 
 const orderSchema = new mongoose.Schema(
   {
-    title: {
-      type: String,
-      require: true,
-    },
-    price: {
-      type: Number,
-      require: true,
-    },
     userId: {
       type: String,
       require: true,
+    },
+    status: {
+      type: String,
+      require: true,
+    },
+    expiresAt: {
+      type: mongoose.Schema.Types.Date,
+    },
+    ticket: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Ticket',
     },
   },
   {
