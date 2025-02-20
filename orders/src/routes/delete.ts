@@ -2,7 +2,7 @@ import express, { NextFunction, Request, Response } from 'express';
 import { NotAuthorizedError, NotFoundError, OrderStatus } from 'tickets-common';
 
 import { Order } from '../models/order';
-import { OrderCancelledPublisher } from '../events/order-cancelled-publisher';
+import { OrderCancelledPublisher } from '../events/publishers/order-cancelled-publisher';
 import { natsWrapper } from '../nats-wrapper';
 
 const router = express.Router();
