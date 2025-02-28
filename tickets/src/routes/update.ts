@@ -4,6 +4,7 @@ import {
   validateRequest,
   NotFoundError,
   NotAuthorizedError,
+  BadRequestError,
 } from 'tickets-common';
 import { z } from 'zod';
 
@@ -27,6 +28,10 @@ router.put(
 
     if (!ticket) {
       return next(new NotFoundError());
+    }
+
+    if (ticket.orderId) {
+      return next(new BadRequestError('Cannot edit a reserved ticket'));
     }
 
     if (ticket.userId !== req.currentUser?.id) {
