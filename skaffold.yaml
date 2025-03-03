@@ -10,7 +10,7 @@ build:
   #   projectId: project-name
   artifacts:
     - image: ngoctong421/auth
-    # - image: us.gcr.io/project-name/auth
+      # - image: us.gcr.io/project-name/auth
       context: auth
       docker:
         dockerfile: Dockerfile
@@ -44,6 +44,14 @@ build:
             dest: .
     - image: ngoctong421/expiration
       context: expiration
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
+    - image: ngoctong421/payments
+      context: payments
       docker:
         dockerfile: Dockerfile
       sync:
