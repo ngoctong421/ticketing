@@ -34,11 +34,11 @@ it('replicates the order info', async () => {
 
   await listener.onMessage(data, msg);
 
-  const orderCreated = await Order.findById(data.id);
+  const createdOrder = await Order.findById(data.id);
 
-  expect(orderCreated).toBeDefined();
-  expect(orderCreated!.userId).toEqual(data.userId);
-  expect(orderCreated!.price).toEqual(data.ticket.price);
+  expect(createdOrder).toBeDefined();
+  expect(createdOrder!.userId).toEqual(data.userId);
+  expect(createdOrder!.price).toEqual(data.ticket.price);
 });
 
 it('acks the message', async () => {
