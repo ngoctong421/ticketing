@@ -28,13 +28,13 @@ router.post(
     const order = await Order.findById(orderId);
 
     if (!order) {
-      next(new NotFoundError());
+      return next(new NotFoundError());
     }
     if (order!.userId !== req.currentUser!.id) {
-      next(new NotAuthorizedError());
+      return next(new NotAuthorizedError());
     }
     if (order!.status === OrderStatus.Cancelled) {
-      next(new BadRequestError('Cannot pay for an cancelled order'));
+      return next(new BadRequestError('Cannot pay for an cancelled order'));
     }
 
     res.send({ success: true });
