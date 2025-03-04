@@ -2,6 +2,8 @@ import cookieSession from 'cookie-session';
 import express from 'express';
 import { errorHandler, NotFoundError, currentUser } from 'tickets-common';
 
+import { createChargeRouter } from './routes/new';
+
 const app = express();
 
 app.use(express.json());
@@ -16,6 +18,8 @@ app.use(
 );
 
 app.use(currentUser);
+
+app.use(createChargeRouter);
 
 app.all('*', async (req, res, next) => {
   next(new NotFoundError());
