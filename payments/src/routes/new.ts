@@ -38,7 +38,7 @@ router.post(
     }
 
     await stripe.paymentIntents.create({
-      amount: order.price,
+      amount: order.price * 100,
       currency: 'usd',
       automatic_payment_methods: {
         enabled: true,
