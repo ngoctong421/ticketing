@@ -4,6 +4,7 @@ import mongoose from 'mongoose';
 import { app } from '../../app';
 import { Order } from '../../models/order';
 import { OrderStatus } from 'tickets-common';
+import { stripe } from '../../stripe';
 
 jest.mock('../../stripe');
 
@@ -75,5 +76,10 @@ it('returns a 204 with valid inputs', async () => {
     .send({
       orderId: order.id,
     })
-    .expect(200);
+    .expect(201);
+
+  const paymentIntentOptions = (stripe.paymentIntents.create as jest.Mock).mock
+    .calls[0][0];
+
+  expect(paymentIntentOptions.amount).toEqual(order.price * 100);
 });
