@@ -40,9 +40,9 @@ router.post(
     await stripe.paymentIntents.create({
       amount: order.price * 100,
       currency: 'usd',
-      automatic_payment_methods: {
-        enabled: true,
-      },
+      confirm: true,
+      payment_method: 'pm_card_visa',
+      payment_method_types: ['card'],
     });
 
     res.status(201).send({ success: true });
