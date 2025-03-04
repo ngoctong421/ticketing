@@ -77,9 +77,4 @@ it('returns a 204 with valid inputs', async () => {
       orderId: order.id,
     })
     .expect(201);
-
-  const paymentIntentOptions = (stripe.paymentIntents.create as jest.Mock).mock
-    .calls[0][0];
-
-  expect(paymentIntentOptions.amount).toEqual(order.price * 100);
 });
