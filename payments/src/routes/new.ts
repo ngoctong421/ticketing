@@ -11,6 +11,7 @@ import { z } from 'zod';
 
 import { Order } from '../models/order';
 import { stripe } from '../stripe';
+import { Payment } from '../models/payment';
 
 const router = express.Router();
 
@@ -37,13 +38,19 @@ router.post(
       return next(new BadRequestError('Cannot pay for an cancelled order'));
     }
 
-    await stripe.paymentIntents.create({
+    const charge = await stripe.paymentIntents.create({
       amount: order.price * 100,
       currency: 'usd',
       confirm: true,
       payment_method: 'pm_card_visa',
       payment_method_types: ['card'],
     });
+
+    const payment = Payment.build({
+      orderId: order.id,
+      stripeId: charge.id,
+    });
+    await payment.save();
 
     res.status(201).send({ success: true });
   }
