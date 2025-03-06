@@ -74,7 +74,11 @@ const CheckoutForm = ({ order }) => {
   return (
     <form onSubmit={handleSubmit}>
       <PaymentElement />
-      <button type="submit" disabled={!stripe || loading}>
+      <button
+        type="submit"
+        disabled={!stripe || loading}
+        className="btn btn-primary"
+      >
         Submit Payment
       </button>
       {errorMessage && <div>{errorMessage}</div>}
