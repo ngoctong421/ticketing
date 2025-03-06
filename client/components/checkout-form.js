@@ -4,6 +4,7 @@ import {
   useElements,
   PaymentElement,
 } from '@stripe/react-stripe-js';
+import Router from 'next/router';
 
 import useRequest from '../hooks/use-request';
 
@@ -56,7 +57,7 @@ const CheckoutForm = ({ order }) => {
       elements,
       clientSecret,
       confirmParams: {
-        return_url: 'http://ticketing.com',
+        return_url: 'http://ticketing.com/orders',
       },
     });
 
