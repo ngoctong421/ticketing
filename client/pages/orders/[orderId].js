@@ -1,9 +1,16 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
 
-import useRequest from '../../hooks/use-request';
+import CheckoutForm from '../../components/checkout-form';
+
+const stripePromise = loadStripe(
+  'pk_test_51QyqFtE9JZKqKWiD19vdhctPjqV5OdjI0jYETLQVvVlBwTOLYGO3dHTfcVkmHHR2b5SU51PB3WAPRIZU7Wtk5jJr000tHaf5FX'
+);
 
 const OrderShow = ({ order }) => {
   const [timeLeft, setTimeLeft] = useState(0);
+  const intervalRef = useRef(null);
 
   useEffect(() => {
     const findTimeLeft = () => {
@@ -12,27 +19,32 @@ const OrderShow = ({ order }) => {
     };
 
     findTimeLeft();
-    const timeId = setInterval(findTimeLeft, 1000);
+    intervalRef.timeId = setInterval(findTimeLeft, 1000);
 
     return () => {
-      clearInterval(timeId);
+      clearInterval(intervalRef.timeId);
     };
   }, [order]);
 
-  const { doRequest, errors } = useRequest({
-    url: '/api/payments',
-    method: 'post',
-    body: {
-      orderId: order.id,
-    },
-    onSuccess: (payment) => console.log(payment),
-  });
-
   if (timeLeft < 0) {
+    clearInterval(intervalRef.timerId);
     return <div>Order Expired</div>;
   }
 
-  return <div>Time left to pay: {timeLeft}</div>;
+  const options = {
+    mode: 'payment',
+    amount: order.ticket.price * 100,
+    currency: 'usd',
+  };
+
+  return (
+    <div>
+      Time left to pay: {timeLeft}
+      <Elements stripe={stripePromise} options={options}>
+        <CheckoutForm order={order} />
+      </Elements>
+    </div>
+  );
 };
 
 OrderShow.getInitialProps = async (context, client, currentUser) => {

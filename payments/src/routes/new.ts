@@ -43,9 +43,9 @@ router.post(
     const charge = await stripe.paymentIntents.create({
       amount: order.price * 100,
       currency: 'usd',
-      confirm: true,
-      payment_method: 'pm_card_visa',
-      payment_method_types: ['card'],
+      automatic_payment_methods: {
+        enabled: true,
+      },
     });
 
     const payment = Payment.build({
@@ -60,7 +60,7 @@ router.post(
       stripeId: payment.stripeId,
     });
 
-    res.status(201).send({ id: payment.id });
+    res.status(201).send({ client_secret: charge.client_secret });
   }
 );
 
