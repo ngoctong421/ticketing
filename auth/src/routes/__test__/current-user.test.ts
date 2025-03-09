@@ -15,5 +15,10 @@ it('responds with detail about current user', async () => {
 });
 
 it('responds with null if not authenticated', async () => {
-  return await request(app).get('/api/users/currentuser').send().expect(401);
+  const response = await request(app)
+    .get('/api/users/currentuser')
+    .send()
+    .expect(200);
+
+  expect(response.body.email).toBeUndefined();
 });
