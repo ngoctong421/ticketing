@@ -4,5 +4,5 @@ kind: ConfigMap
 metadata:
   name: ticketing-config
 data:
-  BASE_URL: "http://www.ticketing-app.space"
+  BASE_URL: "http://www.ticketing-app.space/"
   
