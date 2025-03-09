@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: digitalocean/action-dotcl@v2
+      - uses: digitalocean/action-doctl@v2
         with:
           token: ${{ secrets.DOCKER_USERNAME }}
       - run: doctl kubernetes cluster kubeconfig save ticketing
