@@ -57,7 +57,7 @@ const CheckoutForm = ({ order }) => {
       elements,
       clientSecret,
       confirmParams: {
-        return_url: 'http://ticketing.com/orders',
+        return_url: 'http://ticketing-app.space/orders',
       },
     });
 
