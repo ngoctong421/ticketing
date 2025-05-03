@@ -2,93 +2,86 @@
 
 **Short Description:**
 
-Ticketing is a project I developed to learn about microservices architecture.
+A microservices architecture learning project implementing a ticket marketplace system.
 
 ## Table of Contents
 
-- [Introduction](#introduction)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Microservices Architecture](#microservices-architecture)
+- [Overview](#overview)
+- [Tech Stack](#tech-stack)
+- [Setup](#setup)
+- [Architecture](#architecture)
 - [Features](#features)
-- [Contributing](#contributing)
+- [Development](#development)
 - [Contact](#contact)
-- [License](#license)
 
-## Introduction
+## Overview
 
-Ticketing is a project designed to learn about microservices architecture by breaking down functionalities into independent, manageable services. The project leverages various technologies to support scalable and modular service development.
+Ticketing demonstrates microservices architecture principles through a practical ticket marketplace implementation. Users can list, purchase, and manage tickets in a distributed system.
 
-## Installation
+## Tech Stack
 
-Follow these steps to install and launch the project using Skaffold:
+- Node.js/TypeScript
+- Docker
+- Kubernetes
+- NATS Streaming
+- MongoDB
+- Skaffold
+- Jest (Testing)
 
-1. **Clone the repository:**
+## Setup
+
+1. **Clone repository:**
+
    ```bash
    git clone https://github.com/ngoctong421/ticketing.git
    cd ticketing
    ```
 
-2. **Install Skaffold:**
-   Follow the [Skaffold Installation Guide](https://skaffold.dev/docs/install/)
+2. **Prerequisites:**
 
-3. **Install ingress-nginx:**
+   - Install [Skaffold](https://skaffold.dev/docs/install/)
+   - Install [kubectl](https://kubernetes.io/docs/tasks/tools/)
+   - Setup [Docker](https://docs.docker.com/get-docker/)
+
+3. **Deploy ingress-nginx:**
+
    ```bash
    kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.12.0-beta.0/deploy/static/provider/cloud/deploy.yaml
    ```
 
-4. **Setup ingress routing:**
-   ```bash
-   kubectl apply -f ./infra/k8s/ingress-srv.yaml
-   ```
-
-5. **Start services:**
+4. **Launch services:**
    ```bash
    skaffold dev
    ```
 
-## Usage
+## Architecture
 
-The application provides a ticket marketplace where users can:
-- Create and list tickets for sale
-- Purchase tickets from other users
-- Process payments securely
-- Manage orders and reservations
+Microservices:
 
-## Microservices Architecture
-
-The project consists of the following services:
-
-- **Auth Service**: Handles user authentication
-- **Tickets Service**: Manages ticket creation and updates
-- **Orders Service**: Handles order processing
-- **Payments Service**: Processes payments
-- **Expiration Service**: Manages ticket reservation timeouts
-- **NATS Streaming Server**: Event bus for inter-service communication
+- Auth: User authentication/authorization
+- Tickets: Ticket management
+- Orders: Order processing
+- Payments: Payment handling
+- Expiration: Reservation timeouts
+- NATS: Event bus
 
 ## Features
 
-- User authentication and authorization
-- Ticket creation and management
-- Order processing and tracking
-- Secure payment handling
-- Automated expiration for reserved tickets
-- Event-driven architecture
+- User authentication
+- Ticket marketplace
+- Order management
+- Payment processing
+- Event-driven communication
 - Kubernetes deployment
-- Automated CI/CD with Skaffold
+- Automated development workflow
 
-## Contributing
+## Development
 
-1. Fork the project
-2. Create a feature branch (`git checkout -b feature/new-feature`)
-3. Commit changes (`git commit -m 'Add new feature'`)
-4. Push to branch (`git push origin feature/new-feature`)
-5. Open a pull request
+1. Create feature branch
+2. Make changes
+3. Write tests
+4. Submit pull request
 
 ## Contact
 
-For questions: ngoctong421@gmail.com
-
-## License
-
-This project does not have a specific license.
+Email: ngoctong421@gmail.com
