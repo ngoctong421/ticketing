@@ -1,4 +1,3 @@
-
 # Ticketing
 
 **Short Description:**
@@ -30,50 +29,65 @@ Follow these steps to install and launch the project using Skaffold:
    cd ticketing
    ```
 
-2. **Install Skaffold:** (if you haven’t already)
-   [Skaffold Installation Guide](https://skaffold.dev/docs/install/)
+2. **Install Skaffold:**
+   Follow the [Skaffold Installation Guide](https://skaffold.dev/docs/install/)
 
-3. **Install ingress-nginx:** (if not already installed)
+3. **Install ingress-nginx:**
    ```bash
    kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.12.0-beta.0/deploy/static/provider/cloud/deploy.yaml
    ```
 
-4. **Create an Ingress resource for routing:** The project includes an ingress service for routing traffic to the various services. You can apply the following ingress configuration:
+4. **Setup ingress routing:**
    ```bash
    kubectl apply -f ./infra/k8s/ingress-srv.yaml
    ```
 
-5. **Start the services with Skaffold:**
+5. **Start services:**
    ```bash
    skaffold dev
    ```
 
-Skaffold will automatically set up the Kubernetes environment and deploy the necessary services, including ingress-nginx for routing traffic.
-
 ## Usage
 
+The application provides a ticket marketplace where users can:
+- Create and list tickets for sale
+- Purchase tickets from other users
+- Process payments securely
+- Manage orders and reservations
 
 ## Microservices Architecture
 
-This project includes five main services along with an event bus service:
+The project consists of the following services:
 
+- **Auth Service**: Handles user authentication
+- **Tickets Service**: Manages ticket creation and updates
+- **Orders Service**: Handles order processing
+- **Payments Service**: Processes payments
+- **Expiration Service**: Manages ticket reservation timeouts
+- **NATS Streaming Server**: Event bus for inter-service communication
 
 ## Features
 
+- User authentication and authorization
+- Ticket creation and management
+- Order processing and tracking
+- Secure payment handling
+- Automated expiration for reserved tickets
+- Event-driven architecture
+- Kubernetes deployment
+- Automated CI/CD with Skaffold
 
 ## Contributing
 
-If you would like to contribute, please follow these steps:
-
 1. Fork the project
-2. Create a new branch (`git checkout -b feature/new-feature`)
-3. Commit your changes (`git commit -m 'Add new feature'`)
-4. Push to the branch (`git push origin feature/new-feature`)
-5. Create a pull request
+2. Create a feature branch (`git checkout -b feature/new-feature`)
+3. Commit changes (`git commit -m 'Add new feature'`)
+4. Push to branch (`git push origin feature/new-feature`)
+5. Open a pull request
 
 ## Contact
 
-For more information or questions, please contact me at: ngoctong421@gmail.com
+For questions: ngoctong421@gmail.com
 
 ## License
 
