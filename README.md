@@ -11,7 +11,6 @@ A microservices architecture learning project implementing a ticket marketplace 
 - [Setup](#setup)
 - [Architecture](#architecture)
 - [Features](#features)
-- [Development](#development)
 - [Contact](#contact)
 
 ## Overview
@@ -74,13 +73,6 @@ Microservices:
 - Event-driven communication
 - Kubernetes deployment
 - Automated development workflow
-
-## Development
-
-1. Create feature branch
-2. Make changes
-3. Write tests
-4. Submit pull request
 
 ## Contact
 
